@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verified Seller Submission | SIDDHU Property Advisor</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .seller-container {
+      max-width: 800px;
+      margin: 120px auto 60px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      padding: 40px;
+    }
+    .step-container {
+      display: none;
+    }
+    .step-container.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border-glass);
+      z-index: 1;
+    }
+    .step-indicator {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px solid var(--border-glass);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 2;
+      position: relative;
+    }
+    .step-indicator.active {
+      border-color: var(--primary-accent);
+      color: var(--primary-accent);
+    }
+    .step-indicator.completed {
+      background: var(--primary-accent);
+      border-color: var(--primary-accent);
+      color: var(--bg-dark);
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-glass);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-size: 16px;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+    }
+    .btn {
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: var(--primary-accent);
+      color: var(--bg-dark);
+    }
+    .btn-primary:hover {
+      background: #1eb89f;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-light);
+      border: 1px solid var(--border-glass);
+    }
+    .btn-secondary:hover {
+      border-color: var(--text-light);
+    }
+    .camera-view {
+      width: 100%;
+      height: 300px;
+      background: #000;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    #videoElement {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .photo-slot {
+      border: 1px dashed var(--border-glass);
+      height: 100px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+    .photo-slot.has-image {
+      border-style: solid;
+      color: transparent;
+    }
+    .status-box {
+      background: rgba(37, 99, 235, 0.1);
+      border: 1px solid var(--primary-accent);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body class="dark-theme">
+
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="../index.html" class="brand-logo">SIDDHU Property Advisor</a>
+      <nav class="desktop-nav">
+        <a href="../chichawatni-property-directory/index.html">Directory</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="seller-container">
+    <h1 class="section-title" style="text-align: center; margin-bottom: 8px;">List Your Property</h1>
+    <p class="section-subtitle" style="text-align: center; margin-bottom: 40px;">Verified seller submission workflow</p>
+
+    <div class="progress-bar">
+      <div class="step-indicator active" id="ind-1">1</div>
+      <div class="step-indicator" id="ind-2">2</div>
+      <div class="step-indicator" id="ind-3">3</div>
+      <div class="step-indicator" id="ind-4">4</div>
+      <div class="step-indicator" id="ind-5">5</div>
+    </div>
+
+    <!-- Step 1: Phone -->
+    <div class="step-container active" id="step-1">
+      <h2 style="font-size: 20px; margin-bottom: 20px;">Identity Verification</h2>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="fullName" class="form-input" placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mobile Number (WhatsApp preferred)</label>
+        <input type="text" id="phoneNum" class="form-input" placeholder="0300 1234567">
+      </div>
+      <div id="otp-section" style="display:none; margin-top:20px; padding-top:20px; border-top: 1px solid var(--border-glass);">
+        <label class="form-label">Enter 4-Digit OTP</label>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="otpCode" class="form-input" placeholder="1234" maxlength="4" style="width:150px;">
+          <button class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">(Simulation: Enter any 4 digits)</p>
+      </div>
+      <div style="text-align: right; margin-top: 30px;">
+        <button class="btn btn-primary" id="btnSendOtp" onclick="sendOTP()">Send OTP</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Live GPS -->
+    <div class="step-container" id="step-2">
+      <h2 style="font-size: 20px; margin-bottom: 20px;">Live Location Capture</h2>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+        To ensure listing authenticity, we require live GPS capture from the property location.
+        Exact coordinates will NOT be shown publicly.
+      </p>
+      
+      <div id="gpsStatus" class="status-box" style="display:none;"></div>
+
+      <div style="text-align: center; padding: 40px 0;">
+        <i class="fa-solid fa-location-crosshairs" style="font-size: 48px; color: var(--primary-accent); margin-bottom: 20px;"></i><br>
+        <button class="btn btn-primary" onclick="captureGPS()">Capture My Location Now</button>
+      </div>
+
+      <div style="display:flex; justify-content: space-between; margin-top: 30px;">
+        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+        <button class="btn btn-primary" id="btnNextGps" onclick="nextStep()" disabled>Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Live Camera -->
+    <div class="step-container" id="step-3">
+      <h2 style="font-size: 20px; margin-bottom: 20px;">Live Camera Capture</h2>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">
+        Capture photos directly from your camera to verify property condition.
+      </p>
+
+      <div class="camera-view">
+        <video id="videoElement" autoplay playsinline></video>
+        <div style="position:absolute; bottom:20px; left:0; right:0; text-align:center;">
+          <button class="btn btn-primary" onclick="takePhoto()" style="border-radius:50px; padding: 12px 24px;"><i class="fa-solid fa-camera"></i> Capture</button>
+        </div>
+      </div>
+
+      <div class="photo-grid">
+        <div class="photo-slot" id="photo-1">1. Front Elevation</div>
+        <div class="photo-slot" id="photo-2">2. Street View</div>
+        <div class="photo-slot" id="photo-3">3. Main Entrance</div>
+        <div class="photo-slot" id="photo-4">4. Interior View</div>
+      </div>
+
+      <div style="display:flex; justify-content: space-between; margin-top: 30px;">
+        <button class="btn btn-secondary" onclick="stopCamera(); prevStep();">Back</button>
+        <button class="btn btn-primary" id="btnNextCamera" onclick="stopCamera(); nextStep();" disabled>Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Details & Ownership -->
+    <div class="step-container" id="step-4">
+      <h2 style="font-size: 20px; margin-bottom: 20px;">Property Details</h2>
+      
+      <div class="form-group">
+        <label class="form-label">Locality / Town (must match GPS)</label>
+        <input type="text" id="locality" class="form-input" placeholder="e.g. Hayat Abad">
+      </div>
+      
+      <div style="display:flex; gap:16px;">
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Property Type</label>
+          <select id="propType" class="form-select">
+            <option>House</option>
+            <option>Plot</option>
+            <option>Commercial</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1;">
+          <label class="form-label">Size (Marla)</label>
+          <input type="text" id="propSize" class="form-input" placeholder="e.g. 5">
+        </div>
+      </div>
+
+      <h2 style="font-size: 20px; margin-top: 30px; margin-bottom: 20px;">Ownership</h2>
+      <div class="form-group">
+        <label class="form-label">Are you the:</label>
+        <select id="ownerType" class="form-select">
+          <option>Owner</option>
+          <option>Authorized Representative</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Available Documents</label>
+        <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:10px;">
+          <label><input type="checkbox" class="doc-check" value="CNIC"> CNIC</label>
+          <label><input type="checkbox" class="doc-check" value="Fard"> Fard</label>
+          <label><input type="checkbox" class="doc-check" value="Registry"> Registry</label>
+          <label><input type="checkbox" class="doc-check" value="Mutation"> Intiqal/Mutation</label>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content: space-between; margin-top: 30px;">
+        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Declaration -->
+    <div class="step-container" id="step-5">
+      <h2 style="font-size: 20px; margin-bottom: 20px;">Final Declaration</h2>
+      
+      <div class="status-box" style="margin-bottom: 30px;">
+        <p style="margin-bottom: 10px;"><strong>Privacy & Verification Notice</strong></p>
+        <ul style="font-size: 14px; color: var(--text-light); margin-left: 20px; line-height: 1.6;">
+          <li>Exact GPS coordinates remain internal and will not be published.</li>
+          <li>Documents will be reviewed privately by SIDDHU Admin.</li>
+          <li>Your listing will be marked with "Phone Verified", "Location Captured", and "Photos Captured On Site" trust labels.</li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label style="display:flex; gap:12px; align-items:flex-start; cursor:pointer;">
+          <input type="checkbox" id="declaration" style="margin-top:4px;">
+          <span style="font-size: 14px; color: var(--text-light);">
+            I confirm that I am the owner or authorized representative and that the information and photographs submitted are accurate.
+          </span>
+        </label>
+      </div>
+
+      <div id="submitResult" style="display:none; margin-top:20px; padding:16px; background:rgba(37, 99, 235, 0.1); border:1px solid var(--primary-accent); border-radius:8px;"></div>
+
+      <div style="display:flex; justify-content: space-between; margin-top: 30px;">
+        <button class="btn btn-secondary" onclick="prevStep()" id="btnFinalBack">Back</button>
+        <button class="btn btn-primary" onclick="submitListing()" id="btnSubmit">Submit Listing</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../js/seller-app.js"></script>
+</body>
+</html>
